@@ -32,7 +32,7 @@ export interface GlobalSnackbarProps {
   text: string;
   icon?: string;
   color?: string;
-  location: string
+  location?: string
   showAction?: boolean
   actionText?: string;
   actionColor?: string
@@ -90,8 +90,25 @@ export interface UnlimitedDevice {
   desc?: string
 }
 
+export interface LogConfig {
+  memoryBufferSize: number,
+}
+
+export interface Log {
+  level: string,
+  time: string,
+  content: string
+}
+
+export interface LogResp {
+  log: string,
+  time: string,
+}
+
+export type LogLevel = 'info' | 'warn' | 'error'
 export type SysConfig = LoginSettings & FileTransferLimit & {
   unlimitedDevices: UnlimitedDevice[]
+  log: LogConfig
 }
 export type TrafficTrends = 'network' | 'usage' | 'connection'
 

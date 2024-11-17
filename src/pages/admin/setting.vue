@@ -172,13 +172,54 @@
         </v-skeleton-loader>
       </v-card-text>
     </v-card>
+    <v-card :color="!isSameLogConfig?'primary':undefined"
+            variant="tonal"
+            class="mx-auto border my-5"
+    >
+      <v-card-title>
+        <v-icon icon="mdi-file-arrow-left-right-outline" class="mr-2"/>
+        <span class="font-weight-black">
+          日志
+        </span>
+      </v-card-title>
+      <v-divider opacity="1"/>
+      <v-card-text class="pt-4">
+        <v-skeleton-loader
+          :loading="!logConfig"
+          type="text,list-item-two-line,button"
+        >
+          <v-form class="size-full"
+                  v-model="formValid.log"
+                  @submit.prevent="()=>updateConfig({'log':logConfig},'log')">
+            <v-text-field
+              v-model.number="logConfig!.memoryBufferSize"
+              label="日志内存缓冲区大小"
+              prepend-icon="mdi-speedometer"
+              variant="underlined"
+              type="number"
+              :rules="[
+              value=>!!value||'Required.',
+              value=>value>=0||'Cannot be negative.',
+              value=>/^\d+$/.test(value)||'Cannot be decimal.'
+            ]"
+            />
+            <v-btn type="submit" :color="isSameLogConfig?'grey':'primary'" variant="flat"
+                   :disabled="isSameLogConfig" :loading="submitLoading.log"
+                   prepend-icon="mdi-content-save" class="my-2">
+              保存
+            </v-btn>
+
+          </v-form>
+        </v-skeleton-loader>
+      </v-card-text>
+    </v-card>
   </div>
 </template>
 <script setup lang="ts">
 //@ts-ignore
 import colors from 'vuetify/lib/util/colors'
 import {computed, onMounted, ref} from "vue";
-import {FileTransferLimit, LoginSettings, SysConfig, UnlimitedDevice} from "@/types";
+import {FileTransferLimit, LogConfig, LoginSettings, SysConfig, UnlimitedDevice} from "@/types";
 import * as configReq from "@/network/details/config";
 import {useGlobalDialog} from "@/stores/dialog";
 import {useGlobalSnackbar} from "@/stores/snackbar";
@@ -187,17 +228,20 @@ const {showGlobalDialog} = useGlobalDialog()
 const {showSnackbar} = useGlobalSnackbar()
 const loginSettings = ref<LoginSettings>()
 const fileTransferLimit = ref<FileTransferLimit>()
+const logConfig = ref<LogConfig>()
 const unlimitedDevices = ref<UnlimitedDevice[]>()
 const originConfig = ref<SysConfig>()
-const formValid = ref({
+const formValid = ref<Record<string, boolean>>({
   loginSettings: false,
   fileTransferLimit: false,
   unlimitedDevices: false,
+  log: false,
 })
-const submitLoading = ref({
+const submitLoading = ref<Record<string, boolean>>({
   loginSettings: false,
   fileTransferLimit: false,
   unlimitedDevices: false,
+  log: false,
 })
 const isSameLoginSettings = computed(() => {
   if (!loginSettings.value) return true
@@ -219,6 +263,11 @@ const isSameUnlimitedDevices = computed(() => {
   const originData = originConfig.value?.unlimitedDevices ?? []
   return JSON.stringify(unlimitedDevices.value) === JSON.stringify(originData)
 })
+const isSameLogConfig = computed(() => {
+  if (!logConfig.value) return true
+  const originData = originConfig.value?.log ?? {}
+  return JSON.stringify(logConfig.value) === JSON.stringify(originData)
+})
 const loadConfigs = () => {
   configReq.getConfigs().then(configs => {
     originConfig.value = configs
@@ -231,6 +280,7 @@ const loadConfigs = () => {
       loginExpiredSeconds: configs.loginExpiredSeconds
     }
     unlimitedDevices.value = JSON.parse(JSON.stringify(configs.unlimitedDevices ?? []))
+    logConfig.value = JSON.parse(JSON.stringify(configs.log))
   })
 }
 const updateConfig = (config: any, group: string) => {
@@ -241,7 +291,7 @@ const updateConfig = (config: any, group: string) => {
   submitLoading.value[group] = true
   configReq.updateConfig(config).then(res => {
     showSnackbar({
-      text: `更新${res ? '成功' : '失败'}`,
+      text: `更新${res ? '成功' : '失败'}`
     }, !res)
     if (res) {
       Object.assign(originConfig.value!, config)
