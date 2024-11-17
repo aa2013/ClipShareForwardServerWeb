@@ -12,6 +12,7 @@
     "resolveJsonModule": true,
     "types": [
       "vite/client",
+      "src/types.d.ts",
       "unplugin-vue-router/client"
     ],
     "allowJs": true,
@@ -25,7 +26,7 @@
   },
   "include": [
     "src/**/*",
-    "src/**/*.vue"
+    "src/**/*.vue",
   ],
   "exclude": ["dist", "node_modules", "cypress"],
   "references": [{ "path": "./tsconfig.node.json" }],

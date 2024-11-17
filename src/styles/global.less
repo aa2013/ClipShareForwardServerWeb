@@ -1,3 +1,19 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+:root {
+  --vp-home-hero-name-background: -webkit-linear-gradient(120deg,
+  #bd34fe 30%,
+  #41d1ff);
+}
+
+.hero-text {
+  background: var(--vp-home-hero-name-background);
+  -webkit-text-fill-color: var(--vp-home-hero-name-background);
+  background-clip: text;
+}
+
+html, body {
+  height: 100%;
+  width: 100%;
+}
