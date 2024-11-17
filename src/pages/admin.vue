@@ -7,7 +7,24 @@
         <AppLogoTitle/>
       </v-app-bar-title>
       <v-btn flat icon="mdi-github"/>
-      <v-btn flat icon="mdi-brightness-auto" color="primary"/>
+
+      <v-menu transition="scale-transition">
+        <template v-slot:activator="{ props }">
+          <v-btn flat icon="mdi-brightness-auto" color="primary" v-bind="props"/>
+        </template>
+        <v-list class="w-[120px]">
+          <v-list-item nav :active="currentTheme===item.mode" :key="item.mode" :value="item.mode"
+                       v-for="(item,_) in themeModes" :color="currentTheme===item.mode?'primary':undefined"
+                       @click="()=>setTheme(item.mode)">
+            <v-list-item-title>
+              <v-icon class="mr-2">
+                {{ item.icon }}
+              </v-icon>
+              {{ item.name }}
+            </v-list-item-title>
+          </v-list-item>
+        </v-list>
+      </v-menu>
     </v-app-bar>
     <AppDrawer v-model="drawer" v-if="!mobile"/>
     <v-main>
@@ -25,9 +42,20 @@ import AppLogoTitle from "@/components/AppLogo.vue";
 import {useDisplay} from 'vuetify'
 import {ref, watchEffect} from "vue";
 import Footer from "@/components/Footer.vue";
+import {ThemeMode} from "@/types";
+import {useLocalTheme} from "@/stores/theme";
+import {storeToRefs} from "pinia";
+
 
 const {mobile} = useDisplay()
+const {currentTheme} = storeToRefs(useLocalTheme())
+const {setTheme, clearTheme} = useLocalTheme()
 const drawer = ref<boolean>(!mobile.value)
+const themeModes = ref<ThemeMode[]>([
+  {mode: 'auto', name: '自动', icon: 'mdi-brightness-auto'},
+  {mode: 'light', name: '亮色模式', icon: 'mdi-brightness-5'},
+  {mode: 'dark', name: '暗色模式', icon: 'mdi-brightness-2'},
+])
 watchEffect(() => {
   drawer.value = !mobile.value
 })

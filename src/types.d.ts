@@ -105,6 +105,14 @@ export interface LogResp {
   time: string,
 }
 
+export type LocalThemeTypes = 'dark' | 'light' | 'auto'
+
+export interface ThemeMode {
+  mode: LocalThemeTypes
+  name: string
+  icon: string
+}
+
 export type LogLevel = 'info' | 'warn' | 'error'
 export type SysConfig = LoginSettings & FileTransferLimit & {
   unlimitedDevices: UnlimitedDevice[]

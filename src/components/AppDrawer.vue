@@ -32,7 +32,7 @@
               </template>
               <div class="px-[16px] py-[8px] rounded-[8px] bg-[white] m-[8px]"
               :style="{boxShadow: '0 0px 20px #0000001a'}">
-                <div class="mb-[8px] font-weight-light flex items-center">
+                <div class="mb-[8px] flex items-center">
                   <v-icon icon="mdi-information-outline" size="small" class="mr-1" color="orange"/>
                   是否确认退出登录？
                 </div>
