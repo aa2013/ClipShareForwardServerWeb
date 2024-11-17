@@ -177,7 +177,7 @@
             class="mx-auto border my-5"
     >
       <v-card-title>
-        <v-icon icon="mdi-file-arrow-left-right-outline" class="mr-2"/>
+        <v-icon icon="mdi-flag" class="mr-2"/>
         <span class="font-weight-black">
           日志
         </span>

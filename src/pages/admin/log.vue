@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-2 h-[100%] flex flex-col" flat border>
+  <v-card class="pa-2 h-[100%] flex flex-col" flat >
     <v-card-title class="d-flex align-center">
       <v-icon icon="mdi-flag" class="mr-2" color="primary"/>
       运行日志
