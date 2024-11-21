@@ -16,6 +16,7 @@
     "pinia": "^2.2.6",
     "roboto-fontface": "*",
     "vue": "^3.4.31",
+    "vue-clipboard3": "^2.0.0",
     "vuetify": "^3.7.4"
   },
   "devDependencies": {

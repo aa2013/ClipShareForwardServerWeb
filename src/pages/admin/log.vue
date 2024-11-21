@@ -1,5 +1,5 @@
 <template>
-  <v-card class="pa-2 h-[100%] flex flex-col" flat >
+  <v-card class="pa-2 h-[100%] flex flex-col" flat>
     <v-card-title class="d-flex align-center">
       <v-icon icon="mdi-flag" class="mr-2" color="primary"/>
       运行日志
@@ -19,7 +19,7 @@
 
     </v-card-title>
     <v-divider/>
-    <div class="flex-1-0 overflow-auto h-0">
+    <div class="flex-1-0 overflow-auto h-0" ref="tableContainer">
       <v-data-table
         v-model="pageData.page"
         :items-per-page="pageData.itemsPerPage"
@@ -30,6 +30,7 @@
         no-data-text="暂无数据"
         :fixed-header="true"
         sticky
+        :height="tableHeight||tableContainer?.offsetHeight"
         :search="search"
       >
         <template v-slot:item.level="{ item }">
@@ -105,8 +106,8 @@ const tableHeaders = [
 const logs = ref<Log[]>([])
 const pageData = ref({
   page: 1,
-  pageItems: [10, 20, 50, 100, 500, 1000, 2000, 5000, 10000],
-  itemsPerPage: 10
+  pageItems: [10, 20, 50, 100,],
+  itemsPerPage: 20
 })
 const pageCnt = computed(() => Math.ceil(logs.value.length / pageData.value.itemsPerPage))
 const search = ref<string>()
@@ -126,12 +127,19 @@ const fetchLogs = () => {
     }))
   })
 }
+const tableContainer = ref<HTMLElement>()
+const tableHeight = ref<number>()
+const onWindowResize = () => {
+  tableHeight.value = tableContainer.value?.offsetHeight
+}
 onMounted(() => {
   fetchLogs()
   logTimer = setInterval(fetchLogs, 1000)
+  window.addEventListener('resize', onWindowResize)
 })
 onUnmounted(() => {
   clearInterval(logTimer)
+  window.removeEventListener('resize', onWindowResize)
 })
 </script>
 <style scoped>

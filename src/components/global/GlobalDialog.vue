@@ -23,7 +23,7 @@
           {{ globalDialogProps.cancelBtnText }}
         </v-btn>
 
-        <v-btn @click="onDialogOk" :color="globalDialogProps.okBtnColor" :loading="isOkLoading">
+        <v-btn @click="onDialogOk" :color="globalDialogProps.okBtnColor" :loading="!!isOkLoading">
           {{ globalDialogProps.okBtnText }}
         </v-btn>
       </v-card-actions>

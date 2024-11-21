@@ -22,6 +22,14 @@ export const useLocalTheme = defineStore('local-theme', () => {
   const theme = useTheme()
   const localTheme = ref<LocalThemeTypes>(getCurrentTheme())
   const currentTheme = computed(() => localTheme.value)
+  const currentThemeIcon = computed(() => {
+    if (localTheme.value==='light'){
+      return 'mdi-brightness-5'
+    }else if (localTheme.value==='dark'){
+      return 'mdi-brightness-2'
+    }
+    return 'mdi-brightness-auto'
+  })
   const setTheme = (newTheme: LocalThemeTypes) => {
     localStorage.setItem('theme', newTheme)
     localTheme.value = newTheme
@@ -37,6 +45,6 @@ export const useLocalTheme = defineStore('local-theme', () => {
     theme.global.name.value = apply === 'auto' ? getAutoTheme() : getCurrentTheme()
   }
   return {
-    currentTheme, setTheme, clearTheme, applyTheme
+    currentTheme,currentThemeIcon, setTheme, clearTheme, applyTheme
   }
 })

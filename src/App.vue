@@ -1,7 +1,9 @@
 <template>
-  <router-view/>
-  <global-dialog/>
-  <global-snackbar/>
+  <div class="h-full">
+    <router-view/>
+    <global-dialog/>
+    <global-snackbar/>
+  </div>
 </template>
 
 <script lang="ts" setup>

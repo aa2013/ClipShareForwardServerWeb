@@ -2,7 +2,7 @@
   <div>
     <v-card :color="!isSameLoginSettings?'primary':undefined"
             variant="tonal"
-            class="mx-auto border"
+            class="mx-auto border my-5"
     >
       <v-card-title>
         <v-icon icon="mdi-account-key" class="mr-2"/>
@@ -35,6 +35,43 @@
             />
             <v-btn type="submit" :color="isSameLoginSettings?'grey':'primary'" variant="flat"
                    :disabled="isSameLoginSettings" :loading="submitLoading.loginSettings"
+                   prepend-icon="mdi-content-save" class="my-2">
+              保存
+            </v-btn>
+
+          </v-form>
+        </v-skeleton-loader>
+      </v-card-text>
+    </v-card>
+    <v-card :color="!isSamePublicModeConfig?'primary':undefined"
+            variant="tonal"
+            class="mx-auto border my-5"
+    >
+      <v-card-title>
+        <v-icon icon="mdi-account-key" class="mr-2"/>
+        <span class="font-weight-black">
+          模式选择
+        </span>
+      </v-card-title>
+      <v-divider opacity="1"/>
+
+      <v-card-text class="pt-4">
+        <v-skeleton-loader
+          :loading="!publicMode && typeof publicMode !=='boolean'"
+          type="list-item-two-line,button"
+        >
+          <v-form class="size-full"
+                  v-model="formValid.publicMode"
+                  @submit.prevent="()=>updateConfig({publicMode},'publicMode')">
+            <v-switch color="primary" hide-details inset
+                      v-model="publicMode">
+              <template #prepend>
+                <v-icon icon="mdi-car-speed-limiter" class="mr-4"/>
+                公开模式
+              </template>
+            </v-switch>
+            <v-btn type="submit" :color="isSamePublicModeConfig?'grey':'primary'" variant="flat"
+                   :disabled="isSamePublicModeConfig" :loading="submitLoading.publicMode"
                    prepend-icon="mdi-content-save" class="my-2">
               保存
             </v-btn>
@@ -226,23 +263,33 @@ import {useGlobalSnackbar} from "@/stores/snackbar";
 
 const {showGlobalDialog} = useGlobalDialog()
 const {showSnackbar} = useGlobalSnackbar()
+//region configs
 const loginSettings = ref<LoginSettings>()
 const fileTransferLimit = ref<FileTransferLimit>()
 const logConfig = ref<LogConfig>()
 const unlimitedDevices = ref<UnlimitedDevice[]>()
 const originConfig = ref<SysConfig>()
+const publicMode = ref<boolean>()
+//endregion
+
+//region form
 const formValid = ref<Record<string, boolean>>({
   loginSettings: false,
   fileTransferLimit: false,
   unlimitedDevices: false,
   log: false,
+  publicMode: false,
 })
 const submitLoading = ref<Record<string, boolean>>({
   loginSettings: false,
   fileTransferLimit: false,
   unlimitedDevices: false,
   log: false,
+  publicMode: false,
 })
+//endregion
+
+//region Judge same config
 const isSameLoginSettings = computed(() => {
   if (!loginSettings.value) return true
   const originData = {
@@ -268,6 +315,12 @@ const isSameLogConfig = computed(() => {
   const originData = originConfig.value?.log ?? {}
   return JSON.stringify(logConfig.value) === JSON.stringify(originData)
 })
+const isSamePublicModeConfig = computed(() => {
+  if (!publicMode.value && typeof publicMode.value !== 'boolean') return true
+  const originData = originConfig.value?.publicMode ?? false
+  return (publicMode.value ?? false) === originData
+})
+//endregion
 const loadConfigs = () => {
   configReq.getConfigs().then(configs => {
     originConfig.value = configs
@@ -281,6 +334,7 @@ const loadConfigs = () => {
     }
     unlimitedDevices.value = JSON.parse(JSON.stringify(configs.unlimitedDevices ?? []))
     logConfig.value = JSON.parse(JSON.stringify(configs.log))
+    publicMode.value = configs.publicMode
   })
 }
 const updateConfig = (config: any, group: string) => {

@@ -116,7 +116,8 @@ export interface ThemeMode {
 export type LogLevel = 'info' | 'warn' | 'error'
 export type SysConfig = LoginSettings & FileTransferLimit & {
   unlimitedDevices: UnlimitedDevice[]
-  log: LogConfig
+  log: LogConfig,
+  publicMode: boolean
 }
 export type TrafficTrends = 'network' | 'usage' | 'connection'
 
@@ -147,4 +148,54 @@ export interface ChartData {
 export interface ForcedDisconnectionDto {
   connType: keyof ConnectionStatusResp;
   key: string;
+}
+
+export interface PlanType {
+  id?: string,
+  name: string,
+  rate?: number,
+  lifespan?: number,
+  deviceLimit?: number
+  remark?: string
+  enable: boolean
+}
+
+export interface PlanKey {
+  id: number,
+  key: string,
+  planId: string,
+  planName: string,
+  useAt: string,
+  createdAt: string,
+  enable: boolean
+  remark?: string
+}
+
+export interface PageParams {
+  pageNum: number,
+  pageSize: number,
+}
+
+export type PageData<T> = PageParams & {
+  total: number
+  rows: T[]
+}
+
+export interface DrawerMenu {
+  text: string
+  value: string
+  icon: string
+  route: string
+  defaultParams?: any[]
+  children?: DrawerMenu[]
+}
+
+export interface AutoCompletedItem {
+  title: string,
+  value: string
+}
+
+export interface TableSortOptions {
+  key: string,
+  order: 'asc' | 'desc'
 }

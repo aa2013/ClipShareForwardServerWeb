@@ -10,11 +10,11 @@
 
       <v-menu transition="scale-transition">
         <template v-slot:activator="{ props }">
-          <v-btn flat icon="mdi-brightness-auto" color="primary" v-bind="props"/>
+          <v-btn flat :icon="currentThemeIcon" color="primary" v-bind="props"/>
         </template>
         <v-list class="w-[120px]">
           <v-list-item nav :active="currentTheme===item.mode" :key="item.mode" :value="item.mode"
-                       v-for="(item,_) in themeModes" :color="currentTheme===item.mode?'primary':undefined"
+                       v-for="(item) in themeModes" :color="currentTheme===item.mode?'primary':undefined"
                        @click="()=>setTheme(item.mode)">
             <v-list-item-title>
               <v-icon class="mr-2">
@@ -48,7 +48,7 @@ import {storeToRefs} from "pinia";
 
 
 const {mobile} = useDisplay()
-const {currentTheme} = storeToRefs(useLocalTheme())
+const {currentTheme, currentThemeIcon} = storeToRefs(useLocalTheme())
 const {setTheme, clearTheme} = useLocalTheme()
 const drawer = ref<boolean>(!mobile.value)
 const themeModes = ref<ThemeMode[]>([

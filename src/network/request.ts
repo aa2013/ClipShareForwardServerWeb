@@ -42,8 +42,8 @@ export function request(config: AxiosRequestConfig) {
       }
       showGlobalDialog({
         iconColor: 'error',
-        msg: msg,
-        title: `Error: ${code}`,
+        msg: msg || err.message,
+        title: `Error: ${code || status}`,
       })
     } catch (_) {
       showGlobalDialog({
