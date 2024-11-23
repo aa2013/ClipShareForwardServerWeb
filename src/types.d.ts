@@ -170,6 +170,10 @@ export interface PlanKey {
   enable: boolean
   remark?: string
 }
+export interface GenPlanKeyInfo {
+  id: string,
+  size:number
+}
 
 export interface PageParams {
   pageNum: number,

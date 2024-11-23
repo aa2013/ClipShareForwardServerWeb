@@ -75,7 +75,7 @@
           <v-select
             hide-details
             color="primary"
-            density="comfortable"
+            density="compact"
             label="分页数量"
             v-model="pageData.itemsPerPage"
             :items="pageData.pageItems"

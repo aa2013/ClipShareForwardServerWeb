@@ -13,7 +13,7 @@ export const useGlobalDialog = defineStore('global-dialog', () => {
     msg: '',
     cancelBtnText: '取消',
     cancelBtnColor: undefined,
-    showCancelBtn:false,
+    showCancelBtn: false,
     okBtnText: '确定',
     okBtnColor: 'primary',
     onCancel: () => {
@@ -49,7 +49,7 @@ export const useGlobalDialog = defineStore('global-dialog', () => {
   const globalDialogProps = computed(() => dialogProps.value)
   const showGlobalDialog = (props: GlobalDialogProps) => {
     okLoading.value = false
-    dialogProps.value = Object.assign(defaultProps, props)
+    dialogProps.value = Object.assign({...defaultProps}, props)
     dialogShow.value = true
   }
   return {

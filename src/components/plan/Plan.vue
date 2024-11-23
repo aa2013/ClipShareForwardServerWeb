@@ -82,6 +82,7 @@
         </v-card-actions>
       </div>
     </v-slide-y-reverse-transition>
+    <gen-plan-keys-dialog v-model="showGenKeyDialog" :id="plan?.id"/>
   </v-card>
 </template>
 <script setup lang="ts">
@@ -90,6 +91,7 @@ import {ref} from "vue";
 import * as planReq from '@/network/details/plan'
 import {useGlobalSnackbar} from "@/stores/snackbar";
 import router from "@/router";
+import GenPlanKeysDialog from "@/components/plan/GenPlanKeysDialog.vue";
 
 const plan = defineModel<PlanType>()
 const fold = ref<boolean>(true)
@@ -97,7 +99,7 @@ const elevation = ref<number>(0)
 const emit = defineEmits(['onEditClick']);
 const switching = ref<boolean>(false)
 const {showSnackbar} = useGlobalSnackbar()
-
+const showGenKeyDialog = ref<boolean>(false)
 const onEditClick = () => {
   if (!plan.value?.enable) return
   // 触发事件并传递数据
@@ -117,7 +119,7 @@ const switchStatus = () => {
 }
 const genKey = () => {
   if (!plan.value?.enable) return
-  planReq.generatePlanKeys(plan.value!.id!, 2000)
+  showGenKeyDialog.value = true
 }
 </script>
 

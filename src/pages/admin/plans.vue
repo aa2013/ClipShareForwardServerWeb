@@ -31,10 +31,10 @@
 </template>
 <script setup lang="ts">
 
-import Plan from "@/components/Plan.vue";
+import Plan from "@/components/plan/Plan.vue";
 import {PlanType} from "@/types";
 import {onMounted, onUnmounted, ref} from "vue";
-import PlanDialog from "@/components/PlanDialog.vue";
+import PlanDialog from "@/components/plan/PlanDialog.vue";
 import * as planReq from '@/network/details/plan'
 import EmptyContent from "@/components/EmptyContent.vue";
 

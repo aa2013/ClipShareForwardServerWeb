@@ -4,7 +4,7 @@ import {local} from "@/utils/user";
 import router from "@/router";
 import {useGlobalDialog} from "@/stores/dialog";
 
-const devServer = 'http://192.168.5.12:8282/'
+const devServer = 'http://localhost:8282/'
 const prodServer = 'http://localhost:8282/'
 
 const {showGlobalDialog} = useGlobalDialog()

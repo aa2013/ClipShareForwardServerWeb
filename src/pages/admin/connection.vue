@@ -146,7 +146,6 @@ import {useGlobalSnackbar} from "@/stores/snackbar";
 
 const {mobile} = useDisplay()
 
-const CONNECTION_STATUS_INTERVAL = 5
 const trafficTrends = ref<TrafficTrends>('network')
 const tab = ref<keyof ConnectionStatusResp>('base')
 const isMobile = ref(mobile.value)
@@ -260,8 +259,8 @@ const filterOnlyCapsText = (value: string, query: string, item: any) => {
 onMounted(() => {
   fetchConnectionStatus()
   fetchChartsData()
-  fetchChartDataTimer = setInterval(fetchChartsData, 2 * 1000)
-  connStatusTimer = setInterval(fetchConnectionStatus, CONNECTION_STATUS_INTERVAL * 1000)
+  fetchChartDataTimer = setInterval(fetchChartsData, 1000)
+  connStatusTimer = setInterval(fetchConnectionStatus, 1000)
 })
 const fetchChartsData = () => {
   connReq.getChartsData().then(data => {

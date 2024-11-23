@@ -55,7 +55,7 @@
         <div class="w-[120px]">
           <v-select
             hide-details
-            density="comfortable"
+            density="compact"
             label="分页数量"
             v-model="pageData.itemsPerPage"
             :items="pageData.pageItems"
