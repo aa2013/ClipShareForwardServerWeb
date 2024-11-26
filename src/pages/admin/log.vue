@@ -118,7 +118,7 @@ const fetchLogs = () => {
   logReq.getLogs(lastTime).then(list => {
     logs.value.push(...list.map(item => {
       const logParts = item.log.split(' ')
-      const level = logParts[0].replace(/[\[\]]/g, "")
+      const level = logParts[0].replace(/[[\]]/g, "")
       return {
         time: item.time,
         level: level,

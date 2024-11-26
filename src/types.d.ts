@@ -170,9 +170,10 @@ export interface PlanKey {
   enable: boolean
   remark?: string
 }
+
 export interface GenPlanKeyInfo {
   id: string,
-  size:number
+  size: number
 }
 
 export interface PageParams {
@@ -189,7 +190,7 @@ export interface DrawerMenu {
   text: string
   value: string
   icon: string
-  route: string
+  route?: string
   defaultParams?: any[]
   children?: DrawerMenu[]
 }

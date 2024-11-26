@@ -26,6 +26,7 @@ declare module 'vue-router/auto-routes' {
     '/admin/planKeys/[planId]': RouteRecordInfo<'/admin/planKeys/[planId]', '/admin/planKeys/:planId', { planId: ParamValue<true> }, { planId: ParamValue<false> }>,
     '/admin/plans': RouteRecordInfo<'/admin/plans', '/admin/plans', Record<never, never>, Record<never, never>>,
     '/admin/setting': RouteRecordInfo<'/admin/setting', '/admin/setting', Record<never, never>, Record<never, never>>,
+    '/admin/verifyKey': RouteRecordInfo<'/admin/verifyKey', '/admin/verifyKey', Record<never, never>, Record<never, never>>,
     '/login': RouteRecordInfo<'/login', '/login', Record<never, never>, Record<never, never>>,
   }
 }

@@ -30,7 +30,7 @@ export const useGlobalSnackbar = defineStore('global-snackbar', () => {
     } else if (error === false) {
       props.color = 'primary'
     }
-    snackbarProps.value = Object.assign(defaultProps, props)
+    snackbarProps.value = Object.assign({...defaultProps}, props)
     snackbarShow.value = true
   }
   return {

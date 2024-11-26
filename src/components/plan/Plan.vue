@@ -49,7 +49,8 @@
           </div>
         </div>
       </v-card-text>
-      <div class="absolute right-0 bottom-0 mb-1 mr-3">
+      <div class="absolute right-0 bottom-0 mb-1 mr-3"
+           v-if="!readonly">
         <v-tooltip :text="fold?'展开':'收起'">
           <template v-slot:activator="{props}">
             <v-btn :icon="fold?'mdi-chevron-down':'mdi-chevron-up'" variant="text"
@@ -60,7 +61,7 @@
         </v-tooltip>
       </div>
     </div>
-    <v-slide-y-reverse-transition>
+    <v-slide-y-reverse-transition v-if="!readonly">
       <div v-show="!fold">
         <v-divider opacity="1"/>
         <v-card-actions>
@@ -94,6 +95,9 @@ import router from "@/router";
 import GenPlanKeysDialog from "@/components/plan/GenPlanKeysDialog.vue";
 
 const plan = defineModel<PlanType>()
+defineProps<{
+  readonly?: boolean
+}>()
 const fold = ref<boolean>(true)
 const elevation = ref<number>(0)
 const emit = defineEmits(['onEditClick']);

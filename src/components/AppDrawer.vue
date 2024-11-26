@@ -116,7 +116,7 @@ const gotoPage = (menu: DrawerMenu) => {
 const openedGroup = computed(() => {
   return items.filter(item => item.children)
     .filter(item => {
-      return  item.children!.map(child => child.route).includes(baseRoutePath.value);
+      return item.children!.map(child => child.route).includes(baseRoutePath.value);
     })
     .map(item => item.value)
 })
@@ -133,6 +133,7 @@ const items: DrawerMenu[] = [
     children: [
       {text: '套餐管理', value: 'plans', icon: 'mdi-bookmark-multiple', route: '/admin/plans'},
       {text: '密钥管理', value: 'keys', icon: 'mdi-cloud-key-outline', route: '/admin/planKeys', defaultParams: [0]},
+      {text: '密钥验证', value: 'verifyKey', icon: 'mdi-key-alert-outline', route: '/admin/verifyKey'},
     ]
   },
   {text: '配置修改', value: 'setting', icon: 'mdi-cogs', route: '/admin/setting'},
