@@ -26,7 +26,7 @@
              class="z-10" @click="onAddFabClicked"
              style="width: 50px;height: 50px;"/>
     </div>
-    <plan-dialog v-model="showDialog" :data="editData"/>
+    <plan-dialog v-model="showDialog" :data="editData" @onOk="fetchPlansData"/>
   </div>
 </template>
 <script setup lang="ts">
@@ -48,11 +48,14 @@ const scrollToTop = () => {
 const onWindowScroll = () => {
   scrollTop.value = window.scrollY || document.documentElement.scrollTop
 }
-onMounted(() => {
-  window.addEventListener('scroll', onWindowScroll)
+const fetchPlansData = () => {
   planReq.getPlans().then(res => {
     setTimeout(() => plans.value = res, 350)
   })
+}
+onMounted(() => {
+  window.addEventListener('scroll', onWindowScroll)
+  fetchPlansData()
 })
 onUnmounted(() => {
   window.removeEventListener("scroll", onWindowScroll);

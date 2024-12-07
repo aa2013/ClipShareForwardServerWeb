@@ -87,7 +87,7 @@
       <v-card-title>
         <v-icon icon="mdi-file-arrow-left-right-outline" class="mr-2"/>
         <span class="font-weight-black">
-          文件传输限制
+          文件传输限制（公开模式下生效）
         </span>
       </v-card-title>
       <v-divider opacity="1"/>
@@ -103,7 +103,7 @@
                       v-model="fileTransferLimit!.fileTransferEnabled">
               <template #prepend>
                 <v-icon icon="mdi-car-speed-limiter" class="mr-4"/>
-                启用速率限制
+                允许文件同步
               </template>
             </v-switch>
             <v-text-field

@@ -48,7 +48,7 @@ export interface DevInfo {
 
 export interface ConnectionStatus {
   self: DevInfo;
-  target: DevInfo | null;
+  target?: DevInfo;
   connType: string;
   createTime: string;
   speed: string;

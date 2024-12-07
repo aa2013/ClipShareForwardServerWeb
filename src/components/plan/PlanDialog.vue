@@ -40,11 +40,11 @@
         <v-card-actions>
           <v-spacer></v-spacer>
 
-          <v-btn @click="onCancel">
+          <v-btn @click="onCancelClick">
             取消
           </v-btn>
 
-          <v-btn @click.prevent="onOk" :loading="loading" color="primary" type="submit">
+          <v-btn @click.prevent="onOkClick" :loading="loading" color="primary" type="submit">
             提交{{ isEdit ? '修改' : '新增' }}
           </v-btn>
         </v-card-actions>
@@ -63,8 +63,9 @@ const {showSnackbar} = useGlobalSnackbar()
 const show = defineModel<boolean>()
 const loading = ref(false)
 const props = defineProps<{
-  data?: PlanType
+  data?: PlanType,
 }>()
+const emit = defineEmits(['onOk']);
 const daySeconds = 24 * 60 * 60
 const isEdit = computed(() => !!props.data)
 const submitData = ref<PlanType>({} as PlanType)
@@ -79,11 +80,11 @@ watch(() => props.data, (newV) => {
     submitData.value = {} as PlanType
   }
 })
-const onCancel = () => {
+const onCancelClick = () => {
   show.value = false
   loading.value = false
 }
-const onOk = () => {
+const onOkClick = () => {
   // show.value = false
   loading.value = true
   if (!isFormValid.value) {
@@ -105,6 +106,7 @@ const onOk = () => {
     }, !res)
     if (res) {
       show.value = false
+      emit('onOk',);
     }
   }).finally(() => {
     loading.value = false
