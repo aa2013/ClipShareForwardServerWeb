@@ -49,7 +49,7 @@ import {storeToRefs} from "pinia";
 
 const {mobile} = useDisplay()
 const {currentTheme, currentThemeIcon} = storeToRefs(useLocalTheme())
-const {setTheme, clearTheme} = useLocalTheme()
+const {setTheme} = useLocalTheme()
 const drawer = ref<boolean>(!mobile.value)
 const themeModes = ref<ThemeMode[]>([
   {mode: 'auto', name: '自动', icon: 'mdi-brightness-auto'},

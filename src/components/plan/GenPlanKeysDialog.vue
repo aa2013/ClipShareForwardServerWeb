@@ -38,7 +38,7 @@
 </template>
 <script setup lang="ts">
 import {GenPlanKeyInfo} from "@/types";
-import {ref, watch} from "vue";
+import {ref} from "vue";
 import {useGlobalSnackbar} from "@/stores/snackbar";
 import * as planReq from "@/network/details/plan";
 

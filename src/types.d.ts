@@ -32,7 +32,7 @@ export interface GlobalSnackbarProps {
   text: string;
   icon?: string;
   color?: string;
-  location?: string
+  location?: Anchor
   showAction?: boolean
   actionText?: string;
   actionColor?: string

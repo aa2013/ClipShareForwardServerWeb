@@ -5,7 +5,7 @@ import router from "@/router";
 import {useGlobalDialog} from "@/stores/dialog";
 
 const devServer = 'http://localhost:8282/'
-const prodServer = 'http://localhost:8282/'
+const prodServer = '/api/'
 
 const {showGlobalDialog} = useGlobalDialog()
 
