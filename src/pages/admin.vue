@@ -6,7 +6,7 @@
       <v-app-bar-title>
         <AppLogoTitle/>
       </v-app-bar-title>
-      <v-btn flat icon="mdi-github"/>
+      <v-btn flat icon="mdi-github" @click="gotoGithub"/>
 
       <v-menu transition="scale-transition">
         <template v-slot:activator="{ props }">
@@ -56,6 +56,9 @@ const themeModes = ref<ThemeMode[]>([
   {mode: 'light', name: '亮色模式', icon: 'mdi-brightness-5'},
   {mode: 'dark', name: '暗色模式', icon: 'mdi-brightness-2'},
 ])
+const gotoGithub = () => {
+  window.open('https://github.com/aa2013/ClipShareForwardServerWeb', '_blank')
+}
 watchEffect(() => {
   drawer.value = !mobile.value
 })
