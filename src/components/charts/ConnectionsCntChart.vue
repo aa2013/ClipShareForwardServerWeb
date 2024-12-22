@@ -27,7 +27,7 @@ const options = computed<echarts.EChartsOption>(() => {
       trigger: 'axis',
     },
     legend: {
-      data: ['总连接数','基础连接数', '数据同步连接数', '文件同步连接数']
+      data: ['总连接数','设备连接数', '数据同步连接数', '文件同步连接数']
     },
     grid: {
       left: '3%',
@@ -52,7 +52,7 @@ const options = computed<echarts.EChartsOption>(() => {
         data: totalCntData
       },
       {
-        name: '基础连接数',
+        name: '设备连接数',
         type: 'line',
         data: baseCntData
       },

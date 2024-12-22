@@ -42,6 +42,7 @@ export interface GlobalSnackbarProps {
 
 export interface DevInfo {
   devId: string;
+  devName: string;
   platform: string;
   appVersion: string;
 }
@@ -66,9 +67,11 @@ export const connTypes: (keyof ConnectionStatusResp)[] = ['base', 'dataSync', 'f
 
 export interface ConnTableItem {
   selfId: string,
+  selfName: string,
   platform: string,
   appVersion: string,
   targetId?: string,
+  targetName?: string,
   createTime: string,
   speed: string,
   transferredBytes: string,

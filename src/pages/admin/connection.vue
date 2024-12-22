@@ -70,7 +70,7 @@
         color="primary"
         direction="horizontal"
       >
-        <v-tab prepend-icon="mdi-account" text="基础连接" value="base"/>
+        <v-tab prepend-icon="mdi-account" text="设备连接" value="base"/>
         <v-tab prepend-icon="mdi-lock" text="数据同步" value="dataSync"/>
         <v-tab prepend-icon="mdi-access-point" text="文件同步" value="fileSync"/>
       </v-tabs>
@@ -96,6 +96,66 @@
                 size="small"
                 label
               />
+            </template>
+            <template v-slot:item.selfName="{ item }">
+              <div class="flex items-center">
+                <v-tooltip
+                  :text="item.selfName"
+                  location="top"
+                >
+                  <template v-slot:activator="{ props }">
+                    <div v-bind="props" class="whitespace-nowrap overflow-hidden w-[80px] truncate ">
+                      {{ item.selfName }}
+                    </div>
+                  </template>
+
+                </v-tooltip>
+                <v-tooltip
+                  text="点击查看设备id"
+                  location="top"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" size="small"
+                           color="blue"
+                           variant="text"
+                           elevation="0"
+                           icon="mdi-identifier"
+                           @click="()=>showDevIdDialog(item.selfId,item.selfName)"
+                    />
+                  </template>
+
+                </v-tooltip>
+              </div>
+            </template>
+            <template v-slot:item.targetName="{ item }">
+              <div class="flex items-center">
+                <v-tooltip
+                  :text="item.targetName"
+                  location="top"
+                >
+                  <template v-slot:activator="{ props }">
+                    <div v-bind="props" class="whitespace-nowrap overflow-hidden w-[80px] truncate ">
+                      {{ item.targetName }}
+                    </div>
+                  </template>
+
+                </v-tooltip>
+                <v-tooltip
+                  text="点击查看设备id"
+                  location="top"
+                >
+                  <template v-slot:activator="{ props }">
+                    <v-btn v-bind="props" size="small"
+                           color="blue" v-if="item.targetId"
+                           variant="text"
+                           elevation="0"
+                           icon="mdi-identifier"
+                           @click="()=>showDevIdDialog(item.targetId!,item.targetName)"
+                    />
+                  </template>
+
+                </v-tooltip>
+              </div>
             </template>
             <template v-slot:item.actions="{item}">
               <v-tooltip
@@ -158,9 +218,9 @@ watchEffect(() => {
 const chartDataLen = 10
 const tableHeaders = [
   {
-    title: '设备id',
+    title: '连接设备',
     align: 'start',
-    key: 'selfId',
+    key: 'selfName',
     minWidth: '115px'
   },
   {
@@ -176,9 +236,9 @@ const tableHeaders = [
     minWidth: '135px'
   },
   {
-    title: '目标设备id',
+    title: '目标设备',
     align: 'start',
-    key: 'targetId',
+    key: 'targetName',
     minWidth: '135px'
   },
   {
@@ -274,35 +334,47 @@ const fetchChartsData = () => {
   })
 }
 const tables = computed<Record<keyof ConnectionStatusResp, ConnTableItem[]>>(() => {
-  const baseConns: ConnTableItem[] = connStatus.value.base.map(item => ({
-    appVersion: item.self.appVersion,
-    createTime: item.createTime,
-    platform: item.self.platform,
-    selfId: item.self.devId,
-    speed: item.speed,
-    targetId: item.target?.devId,
-    transferredBytes: item.transferredBytes,
-    unlimited: item.unlimited,
-  } as ConnTableItem))
+  const unlimitedDeviceIds: string[] = []
+  const baseConns: ConnTableItem[] = connStatus.value.base.map(item => {
+    if (item.unlimited) {
+      unlimitedDeviceIds.push(item.self.devId)
+    }
+    return {
+      appVersion: item.self.appVersion,
+      createTime: item.createTime,
+      platform: item.self.platform,
+      selfId: item.self.devId,
+      selfName: item.self.devName,
+      speed: item.speed,
+      targetId: item.target?.devId,
+      targetName: item.target?.devName,
+      transferredBytes: item.transferredBytes,
+      unlimited: item.unlimited,
+    } as ConnTableItem
+  })
   const dataSyncConns: ConnTableItem[] = connStatus.value.dataSync.map(item => ({
     appVersion: item.self.appVersion,
     createTime: item.createTime,
     platform: item.self.platform,
     selfId: item.self.devId,
+    selfName: item.self.devName,
     speed: item.speed,
     targetId: item.target?.devId,
+    targetName: item.target?.devName,
     transferredBytes: item.transferredBytes,
-    unlimited: false//todo
+    unlimited: unlimitedDeviceIds.includes(item.self.devId)
   } as ConnTableItem))
   const fileSyncConns: ConnTableItem[] = connStatus.value.fileSync.map(item => ({
     appVersion: item.self.appVersion,
     createTime: item.createTime,
     platform: item.self.platform,
     selfId: item.self.devId,
+    selfName: item.self.devName,
     speed: item.speed,
     targetId: item.target?.devId,
+    targetName: item.target?.devName,
     transferredBytes: item.transferredBytes,
-    unlimited: false//todo
+    unlimited: unlimitedDeviceIds.includes(item.self.devId)
   } as ConnTableItem))
   return {
     base: baseConns,
@@ -318,6 +390,12 @@ onUnmounted(() => {
 const fetchConnectionStatus = () => {
   connReq.getConnectionStatus().then(data => {
     connStatus.value = data
+  })
+}
+const showDevIdDialog = (id: string, devName: string) => {
+  showGlobalDialog({
+    title: devName + " 设备 id",
+    msg: id,
   })
 }
 const disconnect = (connType: keyof ConnectionStatusResp, item: ConnTableItem) => {
