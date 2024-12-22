@@ -20,11 +20,8 @@
     </v-card-title>
     <v-divider/>
     <div class="flex-1-0 overflow-auto h-0" ref="tableContainer">
-      <v-data-table
-        v-model="pageData.page"
-        :items-per-page="pageData.itemsPerPage"
+      <v-data-table-virtual
         width="100%"
-        items-per-page-text="分页数量 "
         :headers="tableHeaders"
         :items="logs"
         no-data-text="暂无数据"
@@ -45,37 +42,17 @@
         <template v-slot:bottom>
 
         </template>
-      </v-data-table>
+      </v-data-table-virtual>
     </div>
     <div class="flex flex-wrap justify-between items-center ga-4 pa-2">
       <div>
         共 {{ logs.length }} 条数据
       </div>
-      <div class="flex flex-wrap items-center">
-        <div class="w-[120px]">
-          <v-select
-            hide-details
-            density="compact"
-            label="分页数量"
-            v-model="pageData.itemsPerPage"
-            :items="pageData.pageItems"
-            variant="outlined"
-          />
-        </div>
-        <v-pagination
-          show-first-last-page
-          v-model="pageData.page"
-          :length="pageCnt"
-          class="w-[400px]"
-        />
-
-      </div>
-
     </div>
   </v-card>
 </template>
 <script setup lang="ts">
-import {computed, onMounted, onUnmounted, ref} from "vue";
+import {computed, onMounted, onUnmounted, ref, watch, watchEffect} from "vue";
 import {Log, LogLevel} from "@/types";
 import * as logReq from '@/network/details/log'
 
@@ -104,12 +81,6 @@ const tableHeaders = [
   },
 ] as any[]
 const logs = ref<Log[]>([])
-const pageData = ref({
-  page: 1,
-  pageItems: [10, 20, 50, 100,],
-  itemsPerPage: 20
-})
-const pageCnt = computed(() => Math.ceil(logs.value.length / pageData.value.itemsPerPage))
 const search = ref<string>()
 let logTimer: number
 const fetchLogs = () => {
